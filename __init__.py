@@ -108,6 +108,14 @@ def _on_pre_llm_call(
     return {"context": injected}
 
 
+def _on_session_end(session_id: str = "", **_) -> None:
+    """初回ターン未到達のまま終わったセッションの孤児エントリを掃除する。"""
+    with _lock:
+        _context_cache.pop(session_id, None)
+        _ready_events.pop(session_id, None)
+
+
 def register(ctx) -> None:
     ctx.register_hook("on_session_start", _on_session_start)
     ctx.register_hook("pre_llm_call", _on_pre_llm_call)
+    ctx.register_hook("on_session_end", _on_session_end)
