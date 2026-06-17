@@ -1,0 +1,7 @@
+name: session-init
+version: 1.0.0
+description: "セッション開始時に指定ファイルを自動ロードし、コンテキストを pre_llm_call で初回ターンに注入する。"
+author: gadgeteerc-arc
+hooks:
+  - on_session_start
+  - pre_llm_call
